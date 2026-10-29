@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f2">
+  <title>Zave — offers that fit your wallet</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17251f;
+      --muted: #75817b;
+      --line: #e7eae5;
+      --paper: #fff;
+      --canvas: #f5f6f2;
+      --green: #176f50;
+      --green-dark: #10513c;
+      --lime: #d9f36a;
+      --mint: #eaf5ee;
+      --shadow: 0 12px 34px rgba(27, 47, 37, .055);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .app { max-width: 1440px; margin: auto; min-height: 100vh; padding: 0 42px 52px; }
+    .topbar { height: 78px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 850; font-size: 23px; letter-spacing: -1.3px; }
+    .brand-mark { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 10px; background: var(--green); color: var(--lime); font-size: 19px; line-height: 1; }
+    .nav { display: flex; align-items: center; gap: 29px; font-size: 13px; font-weight: 650; color: #64716b; }
+    .nav a { color: inherit; text-decoration: none; }
+    .nav a.active { color: var(--green-dark); }
+    .top-right { display: flex; align-items: center; gap: 17px; }
+    .city { color: #526058; font-size: 13px; font-weight: 650; }
+    .avatar { width: 35px; height: 35px; border-radius: 50%; display: grid; place-items: center; color: var(--green-dark); background: #e4eee6; font-size: 12px; font-weight: 800; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 276px; align-items: center; gap: 30px; padding: 40px 0 27px; }
+    .eyebrow { color: var(--green); text-transform: uppercase; letter-spacing: 1.6px; font-size: 10px; font-weight: 800; }
+    h1 { font-size: clamp(32px, 4vw, 46px); letter-spacing: -2.4px; line-height: 1.08; margin: 10px 0 9px; }
+    .hero-copy { margin: 0; color: var(--muted); font-size: 14px; }
+    .hero-note { display: flex; align-items: center; justify-content: flex-end; gap: 10px; color: #64716b; font-size: 11px; line-height: 1.5; text-align: right; }
+    .live-dot { height: 8px; width: 8px; flex: 0 0 8px; border-radius: 50%; background: #63ad6b; box-shadow: 0 0 0 4px #e3f0e2; }
+    .toolbar { display: flex; gap: 12px; align-items: center; padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: var(--paper); box-shadow: var(--shadow); }
+    .searchbox { display: flex; gap: 11px; flex: 1; min-width: 140px; align-items: center; }
+    .searchbox svg { flex: 0 0 auto; color: #87918c; }
+    .searchbox input { width: 100%; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 13px; }
+    .searchbox input::placeholder { color: #9aa39e; }
+    .divider { height: 33px; width: 1px; background: var(--line); }
+    .wallet-picker { position: relative; }
+    .wallet-picker summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; min-width: 193px; }
+    .wallet-picker summary::-webkit-details-marker { display: none; }
+    .wallet-icon { width: 33px; height: 33px; display: grid; place-items: center; border-radius: 10px; color: var(--green); background: var(--mint); font-weight: 800; }
+    .control-copy { display: grid; gap: 2px; min-width: 0; }
+    .control-label { color: #98a19c; text-transform: uppercase; letter-spacing: 1px; font-size: 9px; font-weight: 800; }
+    .control-value { max-width: 182px; overflow: hidden; color: #27362f; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .chevron { margin-left: auto; color: #87918c; }
+    .wallet-menu { position: absolute; z-index: 4; top: 45px; right: 0; width: min(320px, 85vw); max-height: 370px; overflow: auto; padding: 14px; border: 1px solid var(--line); border-radius: 13px; background: white; box-shadow: 0 14px 40px #17251f24; }
+    .wallet-menu-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; font-size: 12px; font-weight: 750; }
+    .text-button { padding: 3px; border: 0; color: var(--green); background: none; font-size: 11px; font-weight: 700; }
+    .card-option { display: flex; align-items: center; gap: 9px; padding: 9px 5px; border-top: 1px solid #f0f2ef; font-size: 12px; }
+    .card-option input { accent-color: var(--green); }
+    .basket-control { display: grid; gap: 3px; min-width: 108px; }
+    .basket-control input { width: 108px; padding: 0; border: 0; outline: 0; color: #27362f; font-size: 12px; font-weight: 700; }
+    .basket-control input::placeholder { color: #a1aaa5; }
+    .category-row { display: flex; align-items: center; gap: 8px; overflow: auto; padding: 18px 0 20px; scrollbar-width: none; }
+    .category-row::-webkit-scrollbar { display: none; }
+    .category { flex: 0 0 auto; padding: 9px 14px; border: 1px solid #e3e7e2; border-radius: 99px; color: #65716b; background: transparent; font-size: 11px; font-weight: 680; transition: .15s ease; }
+    .category:hover { border-color: #b6c8bd; }
+    .category.selected { border-color: var(--green); color: white; background: var(--green); }
+    .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 15px; margin: 3px 0 17px; }
+    .section-heading h2 { margin: 0; font-size: 20px; letter-spacing: -.7px; }
+    .section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    .sort-label { display: flex; align-items: center; gap: 7px; color: #87918c; font-size: 11px; white-space: nowrap; }
+    .sort-label strong { color: #47574e; font-weight: 750; }
+    .offer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .offer-card { display: flex; min-height: 219px; flex-direction: column; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 4px 16px #17251f06; transition: transform .18s ease, box-shadow .18s ease; }
+    .offer-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .merchant-mark { width: 39px; height: 39px; flex: 0 0 39px; display: grid; place-items: center; border-radius: 12px; background: #f0f4ed; font-size: 20px; }
+    .save-pill { display: flex; align-items: center; gap: 4px; padding: 6px 9px; border-radius: 8px; color: #176f50; background: #eaf5ee; font-size: 10px; font-weight: 800; white-space: nowrap; }
+    .offer-card h3 { margin: 14px 0 5px; font-size: 14px; line-height: 1.35; letter-spacing: -.25px; }
+    .offer-title { display: -webkit-box; overflow: hidden; color: #6f7a74; font-size: 11px; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .offer-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .tag { padding: 5px 7px; border-radius: 6px; color: #627068; background: #f3f5f2; font-size: 9px; font-weight: 650; }
+    .tag.warning { color: #986421; background: #fbf3e5; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 15px; }
+    .expiry { display: flex; align-items: center; gap: 5px; color: #8a948e; font-size: 10px; }
+    .details-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green); font-size: 10px; font-weight: 750; text-decoration: none; }
+    .empty-state, .loading, .error-state { grid-column: 1 / -1; padding: 44px 20px; border: 1px dashed #d9dfd9; border-radius: 14px; color: var(--muted); background: #ffffff9e; text-align: center; font-size: 13px; }
+    .error-state { color: #a33d32; border-color: #eccbc6; background: #fff9f8; }
+    .empty-state strong { display: block; margin-bottom: 7px; color: var(--ink); font-size: 16px; }
+    .footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); color: #929b96; font-size: 10px; }
+    .footer strong { color: #526058; }
+    @media (max-width: 900px) { .app { padding: 0 25px 35px; } .offer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero { grid-template-columns: 1fr auto; } }
+    @media (max-width: 640px) {
+      .app { padding: 0 16px 30px; }
+      .topbar { height: 66px; }
+      .nav { display: none; }
+      .city { font-size: 11px; }
+      .hero { display: block; padding: 30px 0 21px; }
+      h1 { font-size: 35px; }
+      .hero-note { justify-content: flex-start; margin-top: 15px; text-align: left; }
+      .toolbar { flex-wrap: wrap; gap: 12px; padding: 12px; }
+      .searchbox { flex-basis: 100%; padding: 3px 2px 8px; }
+      .divider { width: 100%; height: 1px; }
+      .wallet-picker { flex: 1; }
+      .wallet-picker summary { min-width: 0; }
+      .basket-control { min-width: 90px; }
+      .basket-control input { width: 90px; }
+      .category-row { padding-top: 14px; }
+      .offer-grid { grid-template-columns: 1fr; gap: 10px; }
+      .offer-card { min-height: 198px; }
+      .footer { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Zave home"><span class="brand-mark">z</span>zave</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="active" href="#offers">Explore offers</a>
+        <a href="#wallet">My cards</a>
+        <a href="#about">How it works</a>
+      </nav>
+      <div class="top-right"><span class="city">Dubai, UAE</span><span class="avatar" aria-label="Guest">G</span></div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Make every card count</div>
+          <h1>Your cards. Better offers.</h1>
+          <p class="hero-copy">Discover Dubai deals that fit the cards in your wallet.</p>
+        </div>
+        <div class="hero-note"><span class="live-dot"></span><span id="data-status">Curated card offers<br>ranked for your wallet</span></div>
+      </section>
+
+      <section class="toolbar" id="wallet" aria-label="Search and personalize offers">
+        <label class="searchbox">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.4 4.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input id="search" type="search" placeholder="Search a place, brand or experience" autocomplete="off" aria-label="Search offers">
+        </label>
+        <span class="divider" aria-hidden="true"></span>
+        <details class="wallet-picker" id="wallet-picker">
+          <summary>
+            <span class="wallet-icon">▤</span>
+            <span class="control-copy"><span class="control-label">Your wallet</span><span class="control-value" id="wallet-label">Choose your cards</span></span>
+            <span class="chevron">⌄</span>
+          </summary>
+          <div class="wallet-menu">
+            <div class="wallet-menu-head"><span>Select your cards</span><button class="text-button" id="clear-wallet" type="button">Clear all</button></div>
+            <div id="card-options"></div>
+          </div>
+        </details>
+        <span class="divider" aria-hidden="true"></span>
+        <label class="basket-control">
+          <span class="control-label">Typical spend</span>
+          <input id="basket" type="number" min="10" max="50000" step="10" placeholder="AED (optional)" aria-label="Typical spend in AED">
+        </label>
+      </section>
+
+      <div class="category-row" id="categories" aria-label="Filter by category"></div>
+
+      <section id="offers" aria-live="polite">
+        <div class="section-heading">
+          <div><h2 id="heading">Offers picked for Dubai</h2><p id="result-count">Loading current offers…</p></div>
+          <div class="sort-label">Sorted by <strong>estimated value</strong> ↓</div>
+        </div>
+        <div class="offer-grid" id="offer-grid"><div class="loading">Finding offers for your wallet…</div></div>
+      </section>
+    </main>
+
+    <footer class="footer" id="about">
+      <span><strong>zave</strong> · Better value from the cards you already have.</span>
+      <span>Estimated savings are illustrative. Always check issuer terms before purchase.</span>
+    </footer>
+  </div>
+  <script>
+    const categoryItems = [
+      ["", "All offers"], ["dining", "Dining"], ["groceries", "Groceries"], ["travel_hotels", "Travel"],
+      ["beauty_wellness", "Beauty & wellness"], ["entertainment", "Entertainment"], ["attractions", "Experiences"],
+      ["fashion", "Fashion"], ["kids", "Kids & family"], ["online_shopping", "Online shopping"]
+    ];
+    const categoryIcons = {dining: "🍽️", groceries: "🛍️", travel_hotels: "✈️", beauty_wellness: "✦", entertainment: "🎟️", attractions: "◈", fashion: "✧", kids: "☀️", online_shopping: "⌘", automotive: "↗", health: "＋", jewellery: "◇", electronics: "⌁", services: "✳", other: "✦"};
+    const state = {category: "", cards: [], wallet: new Set(), query: "", basket: ""};
+    const $ = (selector) => document.querySelector(selector);
+    const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[char]));
+    const safeHref = (value) => {
+      try { const url = new URL(value); return ["https:", "http:"].includes(url.protocol) ? url.href : "#"; }
+      catch { return "#"; }
+    };
+    const prettyIssuer = (value) => String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+    const prettyBenefit = (offer) => {
+      const value = Number(offer.value);
+      if (offer.benefit_type === "percent") return `${value}% off${offer.cap_aed ? ` · up to AED ${Number(offer.cap_aed).toLocaleString()}` : ""}`;
+      if (offer.benefit_type === "cashback") return `${value}% cashback`;
+      if (offer.benefit_type === "fixed") return `AED ${value.toLocaleString()} off`;
+      if (offer.benefit_type === "bogo") return "Buy 1, get 1";
+      if (offer.benefit_type === "instalment") return "0% instalments";
+      if (offer.benefit_type === "points") return "Bonus points";
+      return "Special perk";
+    };
+    function renderCategories() {
+      $("#categories").innerHTML = categoryItems.map(([value, label]) =>
+        `<button type="button" class="category ${state.category === value ? "selected" : ""}" data-category="${value}">${label}</button>`
+      ).join("");
+    }
+    function renderCards() {
+      const groups = new Map();
+      state.cards.forEach((card) => {
+        if (!groups.has(card.issuer)) groups.set(card.issuer, []);
+        groups.get(card.issuer).push(card);
+      });
+      $("#card-options").innerHTML = [...groups.entries()].map(([issuer, cards]) =>
+        `<div class="control-label" style="padding:10px 5px 4px">${escapeHtml(prettyIssuer(issuer))}</div>` +
+        cards.map((card) => `<label class="card-option"><input type="checkbox" value="${escapeHtml(card.product_id)}" ${state.wallet.has(card.product_id) ? "checked" : ""}><span>${escapeHtml(card.product_name)}</span></label>`).join("")
+      ).join("");
+      updateWalletLabel();
+    }
+    function updateWalletLabel() {
+      const names = state.cards.filter((card) => state.wallet.has(card.product_id)).map((card) => card.product_name);
+      $("#wallet-label").textContent = names.length ? (names.length === 1 ? names[0] : `${names.length} cards selected`) : "Choose your cards";
+    }
+    function renderOffer(offer) {
+      const expiry = offer.days_left === null ? "No expiry published" : offer.days_left === 0 ? "Ends today" : `Ends in ${offer.days_left} day${offer.days_left === 1 ? "" : "s"}`;
+      const notes = (offer.caveats || []).slice(0, 2);
+      if (offer.eligibility && offer.eligibility !== "no wallet set" && offer.eligibility !== "matches your card") notes.unshift(offer.eligibility);
+      const warning = notes.some((note) => /check|far above|needs AED/i.test(note));
+      const offerTitle = offer.title === offer.merchant ? prettyBenefit(offer) : offer.title;
+      return `<article class="offer-card">
+        <div class="card-top">
+          <div class="merchant-mark" aria-hidden="true">${categoryIcons[offer.category] || "✦"}</div>
+          <span class="save-pill">~ AED ${Number(offer.expected_saving).toLocaleString()} value</span>
+        </div>
+        <h3>${escapeHtml(offer.merchant)}</h3>
+        <div class="offer-title">${escapeHtml(offerTitle)}</div>
+        <div class="offer-tags">
+          <span class="tag">${escapeHtml(prettyBenefit(offer))}</span>
+          <span class="tag">${escapeHtml(prettyIssuer(offer.eligible_issuer))}</span>
+          ${notes.slice(0, 1).map((note) => `<span class="tag ${warning ? "warning" : ""}">${escapeHtml(note)}</span>`).join("")}
+        </div>
+        <div class="card-bottom"><span class="expiry">◷ ${escapeHtml(expiry)}</span><a class="details-link" href="${escapeHtml(safeHref(offer.source_url))}" target="_blank" rel="noopener noreferrer">View offer ↗</a></div>
+      </article>`;
+    }
+    function updateHeading(total) {
+      $("#heading").textContent = state.query ? `Results for “${state.query}”` : state.category ? `${categoryItems.find(([key]) => key === state.category)?.[1] || "Category"} offers` : "Offers picked for Dubai";
+      $("#result-count").textContent = `${total} ${total === 1 ? "offer" : "offers"} · ranked by estimated value`;
+    }
+    async function loadOffers() {
+      const grid = $("#offer-grid");
+      grid.innerHTML = '<div class="loading">Updating offers…</div>';
+      const params = new URLSearchParams();
+      if (state.query) params.set("q", state.query);
+      if (state.category) params.set("category", state.category);
+      if (state.wallet.size) params.set("wallet", [...state.wallet].join(","));
+      if (state.basket) params.set("basket", state.basket);
+      try {
+        const response = await fetch(`/api/offers?${params}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Could not load offers");
+        updateHeading(data.total);
+        grid.innerHTML = data.offers.length ? data.offers.map(renderOffer).join("") :
+          `<div class="empty-state"><strong>No matching offers yet</strong>Try another search or clear a filter to see more Dubai deals.</div>`;
+      } catch (error) {
+        grid.innerHTML = `<div class="error-state">${escapeHtml(error.message)}. Refresh the page to try again.</div>`;
+        $("#result-count").textContent = "Offers are temporarily unavailable";
+      }
+    }
+    async function initialize() {
+      renderCategories();
+      try {
+        const response = await fetch("/api/meta");
+        if (!response.ok) throw new Error("Could not load wallet options");
+        const meta = await response.json();
+        state.cards = meta.cards;
+        renderCards();
+        $("#data-status").innerHTML = meta.sample_data
+          ? "Sample offers ready<br>Live collection not run"
+          : `${meta.active_offers} active offers<br>Across ${meta.issuers} card issuers`;
+        loadOffers();
+      } catch (error) {
+        $("#offer-grid").innerHTML = `<div class="error-state">${escapeHtml(error.message)}. Check the server and refresh this page.</div>`;
+      }
+    }
+    let searchTimer;
+    $("#search").addEventListener("input", (event) => {
+      state.query = event.target.value.trim();
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(loadOffers, 220);
+    });
+    $("#categories").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-category]");
+      if (!button) return;
+      state.category = button.dataset.category;
+      renderCategories();
+      loadOffers();
+    });
+    $("#card-options").addEventListener("change", (event) => {
+      if (event.target.type !== "checkbox") return;
+      if (event.target.checked) state.wallet.add(event.target.value);
+      else state.wallet.delete(event.target.value);
+      updateWalletLabel();
+      loadOffers();
+    });
+    $("#clear-wallet").addEventListener("click", () => {
+      state.wallet.clear();
+      renderCards();
+      loadOffers();
+    });
+    $("#basket").addEventListener("change", (event) => {
+      const value = Number(event.target.value);
+      if (!event.target.value) state.basket = "";
+      else if (value >= 10 && value <= 50000) state.basket = String(value);
+      else {
+        event.target.setCustomValidity("Enter an amount between AED 10 and AED 50,000.");
+        event.target.reportValidity();
+        event.target.setCustomValidity("");
+        return;
+      }
+      loadOffers();
+    });
+    initialize();
+  </script>
+</body>
+</html>

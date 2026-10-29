@@ -1,0 +1,5 @@
+data/raw/
+data/zave.db
+data/raw_offers.jsonl
+__pycache__/
+.venv/

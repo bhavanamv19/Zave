@@ -1,0 +1,22 @@
+issuer,product_id,product_name,network,tier,card_type,verified,source_note
+citi,citi_ultima,Citi Ultima,,,credit,1,named in Citi promo T&Cs ("Citi Ultima & Citi Prestige")
+citi,citi_prestige,Citi Prestige,,,credit,1,named in Citi promo T&Cs
+citi,citi_other_credit,Citi other credit cards,,,credit,0,placeholder bucket for any Citi credit card not named
+citi,citi_debit,Citibank Debit Card,mastercard,,debit,1,Citi nav: "Citibank Debit Card" /mastercard-debit-card
+hsbc,hsbc_skywards_infinite,HSBC Emirates Skywards Infinite,,infinite,credit,1,HSBC card nav (network not read from page)
+hsbc,hsbc_skywards_signature,HSBC Emirates Skywards Signature,,signature,credit,1,HSBC card nav
+hsbc,hsbc_premier,HSBC Premier,,premier,credit,1,HSBC card nav
+hsbc,hsbc_advance,HSBC Advance,,,credit,1,HSBC card nav
+hsbc,hsbc_cash_plus,HSBC Cash+,,,credit,1,HSBC card nav
+hsbc,hsbc_live_plus,HSBC Live+ (Cashback),,,credit,1,HSBC card nav
+hsbc,hsbc_debit,HSBC debit cards,,,debit,1,HSBC offers page says "debit and credit card"
+mashreq,mashreq_solitaire,Mashreq Solitaire,,,credit,1,Mashreq card nav
+mashreq,mashreq_platinum_plus,Mashreq Platinum Plus,,platinum,credit,1,Mashreq card nav
+mashreq,mashreq_cashback,Mashreq Cashback,,,credit,1,Mashreq card nav
+mashreq,mashreq_noon,Mashreq noon,,,credit,1,Mashreq card nav
+mashreq,mashreq_aura_world_elite,Mashreq Aura World Elite,,world_elite,credit,1,Mashreq card nav
+mashreq,mashreq_aura_world,Mashreq Aura World,,world,credit,1,Mashreq card nav
+mashreq,mashreq_aura,Mashreq Aura,,,credit,1,Mashreq card nav
+emirates_islamic,ei_visa_infinite,Emirates Islamic Visa Infinite,visa,infinite,credit,1,EI Visa offers page (Blacklane offer)
+emirates_islamic,ei_visa_covered,Emirates Islamic Visa Covered Card,visa,,credit,1,EI Visa offers page
+emirates_islamic,ei_visa_debit,Emirates Islamic Visa Debit,visa,,debit,1,EI Visa offers page

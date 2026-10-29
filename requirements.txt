@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+lxml
+pydantic>=2
+pytest
+# only for zave/sources/mashreq_js.py endpoint discovery:
+# playwright
