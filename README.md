@@ -4,18 +4,6 @@ Collect public Dubai card offers -> normalise to one schema -> store in SQLite -
 Two sources: **Citi UAE promotions** (static HTML, full T&Cs inline) and **HSBC UAE special offers** (static HTML list, 12 per page, Dubai filter).
 Plus a Playwright **endpoint-discovery** helper for the JS-rendered Mashreq page (see "What is not done").
 
-## Submission documents
-
-- [Part 1: Design document](docs/design-document.md) (editable source; PDF export: `docs/design-document.pdf`)
-- [Part 2: Product spec](docs/product-spec.md) (editable source; PDF export: `docs/product-spec.pdf`)
-- [Part 4: One-pager](docs/one-pager.md) (editable source; PDF export: `docs/one-pager.pdf`)
-- [60-second prototype walkthrough](docs/prototype-demo.webm)
-- [Time log and tools](docs/time-log.md)
-
-The prototype currently runs locally at `http://127.0.0.1:8000`; it is not publicly hosted.
-No GitHub remote is configured for this workspace yet, so a public repository link is pending.
-See the documents for prototype limitations and the exact local run command.
-
 ## Run
 ```bash
 python -m venv .venv && source .venv/bin/activate
